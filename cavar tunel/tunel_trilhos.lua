@@ -1,5 +1,7 @@
 rednet.open("right")
 
+qtdBlocos = 5
+
 function dig()
     turtle.dig()
     turtle.forward()
@@ -31,7 +33,9 @@ end
 
 while true do
     local sender, message, protocol = rednet.receive()
-    if message == "ddig" then
-        digTunnel()
+    if message == "dig" then
+        for count = 1, qtdBlocos, 1 do
+            digTunnel()
+        end
     end
 end
