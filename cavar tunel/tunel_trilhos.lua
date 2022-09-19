@@ -1,7 +1,5 @@
 rednet.open("right")
 
---qtdBlocos = 1
-
 function dig()
     turtle.dig()
     turtle.forward()
@@ -31,12 +29,55 @@ function digTunnel()
     returnToCenter()
 end
 
-while true do
-    qtdBlocos = {rednet.receive("teste")}
-    local sender, message, protocol = rednet.receive("teste")
+function enviarStatus()
+    rednet.send(1, "concluido", "status")
+end
+
+function defCave()
+    blocos = { rednet.receive("qtdblocos") }
+    local sender, message, protocol = rednet.receive("iniciar")
     if message == "dig" then
-        for i = 1, qtdBlocos[2], 1 do
+        --print("Cavando túnel com "..blocos[2].." blocos de comprimento")
+        for i = 1, blocos[2], 1 do
             digTunnel()
         end
     end
+end
+
+while true do
+
+    defCave()
+
+    while true do
+        enviarStatus()
+
+        local sender, message, protocol = rednet.receive("menu")
+
+        if message == "bloco" then
+            defCave()
+        end
+
+        if message == "direcao" then
+
+            turtle.back()
+
+            local sender, message, protocol = rednet.receive("direcao")
+            if message == "d" then
+                turtle.turnRight()
+            end
+            if message == "e" then
+                turtle.turnLeft()
+            end
+
+            turtle.forward()
+
+            defCave()
+
+        end
+
+        if message == "break" then
+            break
+        end
+    end
+    break
 end
