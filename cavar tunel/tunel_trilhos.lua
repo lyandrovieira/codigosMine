@@ -75,6 +75,14 @@ while true do
 
         end
 
+        if message == "escada" then
+            degrau = { rednet.receive("qtddegrau") }
+            for i = 1, (degrau[2] + 1), 1 do
+                digTunnel()
+                turtle.down()
+            end
+        end
+
         if message == "break" then
             break
         end
