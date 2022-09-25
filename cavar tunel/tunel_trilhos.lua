@@ -76,10 +76,19 @@ while true do
         end
 
         if message == "escada" then
+            opc = {rednet.receive("opc") }
             degrau = { rednet.receive("qtddegrau") }
-            for i = 1, (degrau[2] + 1), 1 do
-                digTunnel()
-                turtle.down()
+            if opc[2] == "s" then
+                for i = 1, (degrau[2] + 1), 1 do
+                    digTunnel()
+                    turtle.up()
+                end
+            end
+            if opc[2] == "d" then
+                for i = 1, (degrau[2] + 1), 1 do
+                    digTunnel()
+                    turtle.down()
+                end
             end
         end
 
